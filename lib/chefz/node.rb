@@ -39,7 +39,7 @@ module Chefz
     end
 
     def resources
-      @resources ||= Resources.new(self)
+      @resources ||= Class.new(Resources).new(self)
     end
 
     def available_recipes
