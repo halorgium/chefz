@@ -1,10 +1,10 @@
 module Chefz
   class Resource
-    def initialize(name, action, options = {}, &block)
+    def initialize(name, action, &block)
       unless self.class.valid_actions.include?(action)
         raise "#{action.inspect} is not a valid action for #{self.class}"
       end
-      @name, @action, @options = name, action, options
+      @name, @action = name, action
       if block_given?
         instance_eval(&block)
       end

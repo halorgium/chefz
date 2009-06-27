@@ -12,8 +12,8 @@ module Chefz
       return if @created_actions.include?(name)
       @created_actions << name
       class_eval <<-EOT
-        def #{name}(definition, name, options = {}, &block)
-          resources << definition.new(name, #{name.inspect}, options, &block)
+        def #{name}(definition, name, &block)
+          resources << definition.new(name, #{name.inspect}, &block)
         end
       EOT
     end
