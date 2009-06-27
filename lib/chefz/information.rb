@@ -1,6 +1,6 @@
 module Information
   def data
-    {:ip_address => "zozoz"}
+    @data ||= {}
   end
   module_function :data
 
