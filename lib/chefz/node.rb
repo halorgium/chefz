@@ -16,7 +16,7 @@ module Chefz
 
     def load_resources
       Dir.glob(@directory + "/resources/**/*.rb").each do |filename|
-        Resources.module_eval(File.read(filename))
+        Resources.module_eval(File.read(filename), filename, 1)
       end
       pp Resources.constants
     end

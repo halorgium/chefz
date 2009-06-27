@@ -6,6 +6,9 @@ module Chefz
 
     def self.create_action(name)
       @created_actions ||= []
+      if methods.include?(name.to_s)
+        raise "Cannot create action called #{name.inspect}, already a method"
+      end
       return if @created_actions.include?(name)
       @created_actions << name
       class_eval <<-EOT
