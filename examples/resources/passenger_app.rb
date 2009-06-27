@@ -1,2 +1,2 @@
-class PassengerApp < Chefz::Resource
+class PassengerApp < Resource
 end

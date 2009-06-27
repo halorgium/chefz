@@ -17,9 +17,24 @@ module Chefz
     def self.actions(*actions)
       @actions = actions
       actions.each do |name|
-        Resources.create_action(name.to_sym)
+        create_action(name.to_sym)
       end
     end
+
+    def self.create_action(name)
+      @created_actions ||= []
+      if methods.include?(name.to_s)
+        raise "Cannot create action called #{name.inspect}, already a method"
+      end
+      return if @created_actions.include?(name)
+      @created_actions << name
+      class_eval <<-EOT
+        def self.#{name}(name, &block)
+          @@information.resources << new(name, #{name.inspect}, &block)
+        end
+      EOT
+    end
+
 
     def self.valid_actions
       @actions || []

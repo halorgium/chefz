@@ -1,4 +1,4 @@
-class HTTPRequest < Chefz::Resource
+class HTTPRequest < Resource
   actions :make
 
   def make

@@ -15,10 +15,12 @@ module Chefz
     end
 
     def load_resources
+      filename = File.dirname(__FILE__) + "/information.rb"
+      resources_klass.module_eval(File.read(filename), filename, 1)
       Dir.glob(@directory + "/resources/**/*.rb").each do |filename|
-        Resources.module_eval(File.read(filename), filename, 1)
+        resources_klass.module_eval(File.read(filename), filename, 1)
       end
-      pp Resources.constants
+      pp resources_klass.constants
     end
 
     def load_recipes
@@ -29,17 +31,28 @@ module Chefz
         raise "Could not find missing recipes: #{missing.inspect}"
       end
       @recipes.each do |name|
-        resources.instance_eval(File.read(@directory + "/recipes/#{name}.rb"))
+        resources.instance_eval(File.read(@directory + "/recipes/#{name}.rb"), "(recipe: #{name})", 1)
       end
       pp resources
     end
 
     def run_resources
-      resources.run
+      pp information_module.resources
+      information_module.resources.each do |resource|
+        resource.run
+      end
+    end
+
+    def resources_klass
+      @resources_klass ||= Class.new(Resources)
+    end
+
+    def information_module
+      @information_module ||= resources_klass.const_get(:Information)
     end
 
     def resources
-      @resources ||= Class.new(Resources).new(self)
+      @resources ||= resources_klass.new(self)
     end
 
     def available_recipes

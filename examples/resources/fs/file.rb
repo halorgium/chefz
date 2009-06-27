@@ -1,7 +1,7 @@
 require 'fileutils'
 
 module FS
-  class File < Chefz::Resource
+  class File < Resource
     actions :create, :delete, :touch
 
     attribute :backup, :default => 5
